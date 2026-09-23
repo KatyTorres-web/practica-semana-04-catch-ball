@@ -173,3 +173,105 @@
 
   drawBall();
 })();
+
+
+const validatePlayerName = () => {
+  const name = playerName.value.trim();
+
+  if (name.length === 0) {
+    nameError.textContent = "El nombre es obligatorio.";
+
+    playerName.classList.add("input-error");
+
+    return false;
+  }
+
+  if (name.length < 3) {
+    nameError.textContent = "El nombre debe tener al menos 3 caracteres.";
+
+    playerName.classList.add("input-error");
+
+    return false;
+  }
+
+  nameError.textContent = "";
+
+  playerName.classList.remove("input-error");
+
+  playerDisplay.textContent = name;
+
+  return true;
+};
+playerName.addEventListener("input", () => {
+  validatePlayerName();
+});
+
+const toggleTheme = () => {
+  document.body.classList.toggle("dark-theme");
+};
+themeButton.addEventListener("click", () => {
+  toggleTheme();
+});
+const updateSpeed = () => {
+  const speed = Number(speedInput.value);
+
+  speedValue.textContent = speed;
+
+  const directionX = ball.velocityX >= 0 ? 1 : -1;
+
+  const directionY = ball.velocityY >= 0 ? 1 : -1;
+
+  ball.velocityX = speed * directionX;
+
+  ball.velocityY = speed * 0.7 * directionY;
+};
+speedInput.addEventListener("input", () => {
+  updateSpeed();
+});
+const updateSize = () => {
+  const size = Number(sizeInput.value);
+
+  sizeValue.textContent = size;
+
+  ball.radius = size;
+};
+sizeInput.addEventListener("input", () => {
+  updateSize();
+
+  drawBall();
+});
+
+const updateBall = (dt) => {
+
+    ball.x +=
+        ball.velocityX * dt;
+
+
+    ball.y +=
+        ball.velocityY * dt;
+
+
+    // Rebote horizontal
+
+    if (
+        ball.x + ball.radius >= canvas.width ||
+        ball.x - ball.radius <= 0
+    ) {
+
+        ball.velocityX *= -1;
+
+    }
+
+
+    // Rebote vertical
+
+    if (
+        ball.y + ball.radius >= canvas.height ||
+        ball.y - ball.radius <= 45
+    ) {
+
+        ball.velocityY *= -1;
+
+    }
+
+};
