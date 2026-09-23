@@ -1,55 +1,87 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
 
-    <meta
-      name="description"
-      content="Catch the Ball - Juego desarrollado con JavaScript y Canvas API"
-    />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-    <title>Catch the Ball</title>
+  <meta
+    name="description"
+    content="Catch the Ball - Laboratorio interactivo de JavaScript y Canvas API"
+  />
 
-    <link rel="stylesheet" href="styles.css" />
+  <title>Catch the Ball | Laboratorio JavaScript</title>
 
-    <!--
-        defer permite que el HTML sea procesado antes
-        de ejecutar el archivo JavaScript.
-    -->
-    <script src="app.js" defer></script>
-  </head>
+  <link rel="stylesheet" href="styles.css" />
 
-  <body>
-    <!-- ==========================================
-         ENCABEZADO
-    =========================================== -->
+  <script src="app.js" defer></script>
+</head>
 
-    <header class="header">
-      <div>
-        <p class="eyebrow">Desarrollo de Aplicaciones Web</p>
+<body>
 
-        <h1>🎯 Catch the Ball</h1>
+  <!-- ======================================================
+       HEADER
+       ====================================================== -->
 
-        <p>Juego de atrapar la pelota con JavaScript</p>
-      </div>
+  <header class="header">
 
-      <button id="themeButton" class="button button-secondary" type="button">
-        🌙 Cambiar tema
-      </button>
-    </header>
+    <div>
+      <p class="eyebrow">
+        Desarrollo de Aplicaciones Web · Semana 04
+      </p>
 
-    <main class="container">
-      <!-- ==========================================
-             DATOS DEL JUGADOR
-        =========================================== -->
+      <h1>Catch the Ball</h1>
 
-      <section class="panel" aria-labelledby="player-title">
-        <h2 id="player-title">Datos del jugador</h2>
+      <p>
+        Laboratorio interactivo de JavaScript, DOM,
+        Closures, Canvas y animaciones.
+      </p>
+    </div>
+
+    <button
+      id="themeButton"
+      class="button button-secondary"
+      type="button"
+    >
+      Cambiar tema
+    </button>
+
+  </header>
+
+
+  <!-- ======================================================
+       CONTENIDO PRINCIPAL
+       ====================================================== -->
+
+  <main class="container">
+
+    <!-- ====================================================
+         COLUMNA DEL JUEGO
+         ==================================================== -->
+
+    <div class="game-column">
+
+
+      <!-- DATOS DEL JUGADOR -->
+
+      <section
+        class="panel"
+        aria-labelledby="player-title"
+      >
+
+        <h2 id="player-title">
+          Datos del jugador
+        </h2>
 
         <div class="control-group">
-          <label for="playerName"> Nombre del jugador </label>
+
+          <label for="playerName">
+            Nombre del jugador
+          </label>
 
           <input
             id="playerName"
@@ -57,27 +89,45 @@
             placeholder="Ingresa tu nombre"
             maxlength="30"
             autocomplete="off"
+            aria-describedby="nameError"
           />
 
-          <small id="nameError" class="error-message"></small>
+          <small
+            id="nameError"
+            class="error-message"
+            role="alert"
+          ></small>
+
         </div>
+
       </section>
 
-      <!-- ==========================================
-             CONTROLES
-        =========================================== -->
 
-      <section class="panel" aria-labelledby="controls-title">
-        <h2 id="controls-title">Controles</h2>
+      <!-- CONTROLES -->
+
+      <section
+        class="panel"
+        aria-labelledby="controls-title"
+      >
+
+        <h2 id="controls-title">
+          Controles
+        </h2>
 
         <div class="controls-grid">
+
           <div class="control-group">
+
             <label for="speedInput">
+
               Velocidad:
 
-              <span id="speedValue"> 150 </span>
+              <span id="speedValue">
+                150
+              </span>
 
               px/s
+
             </label>
 
             <input
@@ -86,25 +136,48 @@
               min="50"
               max="400"
               value="150"
+              step="10"
             />
+
           </div>
+
 
           <div class="control-group">
+
             <label for="sizeInput">
+
               Tamaño:
 
-              <span id="sizeValue"> 25 </span>
+              <span id="sizeValue">
+                25
+              </span>
 
               px
+
             </label>
 
-            <input id="sizeInput" type="range" min="15" max="50" value="25" />
+            <input
+              id="sizeInput"
+              type="range"
+              min="15"
+              max="50"
+              value="25"
+              step="1"
+            />
+
           </div>
+
         </div>
 
+
         <div class="button-group">
-          <button id="startButton" class="button button-primary" type="button">
-            ▶ Iniciar
+
+          <button
+            id="startButton"
+            class="button button-primary"
+            type="button"
+          >
+            Iniciar
           </button>
 
           <button
@@ -112,97 +185,358 @@
             class="button button-secondary"
             type="button"
           >
-            ↻ Reiniciar
+            Reiniciar
           </button>
+
         </div>
+
       </section>
 
-      <!-- ==========================================
-             ESTADÍSTICAS
-        =========================================== -->
 
-      <section class="panel" aria-labelledby="stats-title">
-        <h2 id="stats-title">Estadísticas</h2>
+      <!-- ESTADÍSTICAS -->
+
+      <section
+        class="panel"
+        aria-labelledby="stats-title"
+      >
+
+        <h2 id="stats-title">
+          Estadísticas
+        </h2>
 
         <div class="stats">
-          <div class="stat-card">
-            <span> Jugador </span>
 
-            <strong id="playerDisplay"> - </strong>
+          <div class="stat-card">
+            <span>Jugador</span>
+            <strong id="playerDisplay">-</strong>
           </div>
 
           <div class="stat-card">
-            <span> Puntos </span>
-
-            <strong id="score"> 0 </strong>
+            <span>Puntos</span>
+            <strong id="score">0</strong>
           </div>
 
           <div class="stat-card">
-            <span> Tiempo </span>
-
-            <strong> <span id="time"> 30 </span>s </strong>
+            <span>Tiempo</span>
+            <strong>
+              <span id="time">30</span>s
+            </strong>
           </div>
 
           <div class="stat-card">
-            <span> FPS </span>
-
-            <strong id="fps"> 0 </strong>
+            <span>FPS</span>
+            <strong id="fps">0</strong>
           </div>
+
+          <div class="stat-card">
+            <span>Frames</span>
+            <strong id="frameCounter">0</strong>
+          </div>
+
+          <div class="stat-card">
+            <span>Combo</span>
+            <strong id="combo">0</strong>
+          </div>
+
         </div>
-        <div class="stat-card">
-          <span> Frames </span>
 
-          <strong id="frameCounter"> 0 </strong>
-        </div>
       </section>
 
-      <!-- ==========================================
-             CANVAS
-        =========================================== -->
 
-      <section class="panel" aria-labelledby="game-title">
+      <!-- ÁREA DE JUEGO -->
+
+      <section
+        class="panel"
+        aria-labelledby="game-title"
+      >
+
         <div class="canvas-header">
-          <div>
-            <h2 id="game-title">Área de juego</h2>
 
-            <p id="gameStatus">Estado: detenido</p>
+          <div>
+
+            <h2 id="game-title">
+              Área de juego
+            </h2>
+
+            <p id="gameStatus">
+              Estado: detenido
+            </p>
+
           </div>
+
         </div>
+
 
         <div class="canvas-wrapper">
-          <canvas id="gameCanvas" width="800" height="400">
+
+          <canvas
+            id="gameCanvas"
+            width="800"
+            height="400"
+            aria-label="Área de juego Catch the Ball"
+          >
             Tu navegador no soporta Canvas.
           </canvas>
+
         </div>
 
-        <p id="gameMessage" class="game-message">
+
+        <p
+          id="gameMessage"
+          class="game-message"
+          aria-live="polite"
+        >
           Ingresa tu nombre y presiona "Iniciar".
         </p>
+
       </section>
 
-      <!-- ==========================================
-             INFORMACIÓN
-        =========================================== -->
 
-      <section class="panel">
-        <h2>¿Cómo jugar?</h2>
+      <!-- COMO JUGAR -->
+
+      <section
+        class="panel"
+        aria-labelledby="how-to-title"
+      >
+
+        <h2 id="how-to-title">
+          Cómo jugar
+        </h2>
 
         <ol>
-          <li>Ingresa tu nombre.</li>
 
-          <li>Presiona "Iniciar".</li>
+          <li>
+            Ingresa tu nombre.
+          </li>
 
-          <li>Haz clic sobre la pelota.</li>
+          <li>
+            Configura la velocidad y el tamaño de la pelota.
+          </li>
 
-          <li>Cada acierto suma un punto.</li>
+          <li>
+            Presiona "Iniciar".
+          </li>
 
-          <li>El juego termina cuando el tiempo llega a cero.</li>
+          <li>
+            Haz clic sobre la pelota.
+          </li>
+
+          <li>
+            Cada acierto suma un punto.
+          </li>
+
+          <li>
+            Los aciertos pueden activar efectos y combos.
+          </li>
+
+          <li>
+            El juego termina cuando el tiempo llega a cero.
+          </li>
+
         </ol>
-      </section>
-    </main>
 
-    <footer class="footer">
-      <p>Práctica Semana 04 · JavaScript & Canvas API</p>
-    </footer>
-  </body>
+      </section>
+
+    </div>
+
+
+    <!-- ====================================================
+         COLUMNA DE PASOS
+         ==================================================== -->
+
+    <aside
+      class="steps-column"
+      aria-labelledby="steps-title"
+    >
+
+      <section class="panel steps-panel">
+
+        <div class="steps-header">
+
+          <p class="eyebrow">
+            Laboratorio interactivo
+          </p>
+
+          <h2 id="steps-title">
+            Pasos de la práctica
+          </h2>
+
+        </div>
+
+
+        <!-- INDICADOR DEL PASO SELECCIONADO -->
+
+        <div class="selected-step">
+
+          <span>
+            Paso seleccionado
+          </span>
+
+          <strong id="selectedStep">
+            1
+          </strong>
+
+        </div>
+
+
+        <!-- =================================================
+             BOTONES DE LOS PASOS
+             ================================================= -->
+
+        <nav
+          class="steps-list"
+          aria-label="Pasos de la práctica"
+        >
+
+          <button
+            class="step-button active"
+            type="button"
+            data-step="1"
+          >
+
+            <span class="step-number">
+              1
+            </span>
+
+            <span class="step-content">
+
+              <strong>
+                Estructura HTML
+              </strong>
+
+              <small>
+                DOM + Canvas + defer
+              </small>
+
+            </span>
+
+          </button>
+
+
+          <button
+            class="step-button"
+            type="button"
+            data-step="2"
+          >
+
+            <span class="step-number">
+              2
+            </span>
+
+            <span class="step-content">
+
+              <strong>
+                IIFE + Closure
+              </strong>
+
+              <small>
+                Estado privado + funciones flecha
+              </small>
+
+            </span>
+
+          </button>
+
+
+          <button
+            class="step-button"
+            type="button"
+            data-step="3"
+          >
+
+            <span class="step-number">
+              3
+            </span>
+
+            <span class="step-content">
+
+              <strong>
+                Manipulación DOM
+              </strong>
+
+              <small>
+                Eventos + validación + classList
+              </small>
+
+            </span>
+
+          </button>
+
+
+          <button
+            class="step-button"
+            type="button"
+            data-step="4"
+          >
+
+            <span class="step-number">
+              4
+            </span>
+
+            <span class="step-content">
+
+              <strong>
+                Canvas + Animación
+              </strong>
+
+              <small>
+                requestAnimationFrame + dt
+              </small>
+
+            </span>
+
+          </button>
+
+
+          <button
+            class="step-button"
+            type="button"
+            data-step="5"
+          >
+
+            <span class="step-number">
+              5
+            </span>
+
+            <span class="step-content">
+
+              <strong>
+                Performance + Memory
+              </strong>
+
+              <small>
+                FPS + Frames + optimización
+              </small>
+
+            </span>
+
+          </button>
+
+        </nav>
+
+      </section>
+
+    </aside>
+
+  </main>
+
+
+  <!-- ======================================================
+       FOOTER
+       ====================================================== -->
+
+  <footer class="footer">
+
+    <p>
+      Práctica Semana 04 · JavaScript & Canvas API
+    </p>
+
+    <p>
+      TORRES AMBROSIO KATHERINE MEDALLY
+    </p>
+
+  </footer>
+
+</body>
+
 </html>

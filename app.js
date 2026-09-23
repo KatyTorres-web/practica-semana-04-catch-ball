@@ -1,9 +1,28 @@
+/*
+ * ========================================================
+ * CATCH THE BALL
+ * Práctica Semana 04
+ * JavaScript + Canvas API
+ *
+ * Conceptos:
+ * - IIFE
+ * - Closure
+ * - Arrow Functions
+ * - DOM
+ * - Canvas API
+ * - requestAnimationFrame
+ * - Delta Time (dt)
+ * - Eventos
+ * - Validación
+ * ========================================================
+ */
+
 (() => {
   "use strict";
 
-  // ==========================================
-  // ELEMENTOS DEL DOM
-  // ==========================================
+  // ========================================================
+  // 1. ELEMENTOS DEL DOM
+  // ========================================================
 
   const canvas = document.querySelector("#gameCanvas");
 
@@ -35,15 +54,38 @@
 
   const frameCounter = document.querySelector("#frameCounter");
 
+  const comboElement = document.querySelector("#combo");
+
   const nameError = document.querySelector("#nameError");
 
   const gameStatus = document.querySelector("#gameStatus");
 
   const gameMessage = document.querySelector("#gameMessage");
 
-  // ==========================================
-  // ESTADO PRIVADO
-  // ==========================================
+  // ========================================================
+  // ELEMENTOS DE LOS PASOS
+  // ========================================================
+
+  const stepButtons = document.querySelectorAll(".step-button");
+
+  const selectedStep = document.querySelector("#selectedStep");
+
+  // ========================================================
+  // 2. ESTADO PRIVADO
+  // ========================================================
+
+  /*
+   * ========================================================
+   * IIFE + CLOSURE
+   * ========================================================
+   *
+   * Todas las variables están dentro de la IIFE.
+   *
+   * Las funciones creadas dentro de este ámbito mantienen
+   * acceso a estas variables mediante Closure.
+   *
+   * Esto evita crear variables globales.
+   */
 
   let score = 0;
 
@@ -65,22 +107,17 @@
 
   let fpsLastTimestamp = 0;
 
+  let combo = 0;
+
   /*
-   * CLOSURE:
-   *
-   * Las funciones definidas dentro de esta IIFE
-   * mantienen acceso al estado privado del juego.
-   *
-   * Por ejemplo, gameLoop() puede acceder a
-   * score, isRunning, lastTimestamp y frameCount.
-   *
-   * Estas variables conservan su estado entre las
-   * diferentes ejecuciones de requestAnimationFrame().
+   * Paso actualmente seleccionado.
    */
 
-  // ==========================================
-  // PELOTA
-  // ==========================================
+  let currentStep = 1;
+
+  // ========================================================
+  // 3. PELOTA
+  // ========================================================
 
   const ball = {
     x: canvas.width / 2,
@@ -92,14 +129,206 @@
     velocityX: Number(speedInput.value),
 
     velocityY: Number(speedInput.value) * 0.7,
+
+    color: "#2563eb",
   };
 
-  // ==========================================
-  // DIBUJAR
-  // ==========================================
+  // ========================================================
+  // 4. FUNCIONALIDADES DE LOS PASOS
+  // ========================================================
+
+  /*
+   * Cada paso activa una funcionalidad.
+   *
+   * Paso 1:
+   * estructura e interfaz.
+   *
+   * Paso 2:
+   * estado privado mediante IIFE + Closure.
+   *
+   * Paso 3:
+   * interacción y manipulación del DOM.
+   *
+   * Paso 4:
+   * Canvas y animación.
+   *
+   * Paso 5:
+   * métricas de rendimiento.
+   */
+
+  // ========================================================
+  // PASO 1
+  // ========================================================
+
+  const activateStep1 = () => {
+    /*
+     * El paso 1 corresponde a la estructura de la
+     * aplicación y al Canvas.
+     */
+
+    drawBall();
+  };
+
+  // ========================================================
+  // PASO 2
+  // ========================================================
+
+  const activateStep2 = () => {
+    /*
+     * El estado del juego ya está protegido dentro
+     * de la IIFE.
+     *
+     * Las funciones utilizan Closure para acceder
+     * a score, combo, tiempo, etc.
+     */
+
+    gameMessage.textContent =
+      "Estado privado gestionado mediante IIFE y Closure.";
+  };
+
+  // ========================================================
+  // PASO 3
+  // ========================================================
+
+  const activateStep3 = () => {
+    /*
+     * Se activa la interacción con el DOM.
+     */
+
+    validatePlayerName();
+
+    updateSpeed();
+
+    updateSize();
+  };
+
+  // ========================================================
+  // PASO 4
+  // ========================================================
+
+  const activateStep4 = () => {
+    /*
+     * Paso dedicado al Canvas y a requestAnimationFrame.
+     *
+     * La animación se inicia utilizando el botón
+     * "Iniciar".
+     */
+
+    drawBall();
+
+    gameMessage.textContent = "Canvas y animación disponibles.";
+  };
+
+  // ========================================================
+  // PASO 5
+  // ========================================================
+
+  const activateStep5 = () => {
+    /*
+     * Paso dedicado a las métricas de rendimiento.
+     */
+
+    fpsElement.parentElement.classList.add("performance-active");
+
+    frameCounter.parentElement.classList.add("performance-active");
+
+    gameMessage.textContent = "Métricas de FPS y frames activadas.";
+  };
+
+  // ========================================================
+  // 5. ACTIVAR PASO
+  // ========================================================
+
+  const activateStep = (stepNumber) => {
+    /*
+     * Guardamos el paso seleccionado.
+     *
+     * Gracias al Closure, currentStep permanece disponible
+     * para las funciones que se ejecuten posteriormente.
+     */
+
+    currentStep = stepNumber;
+
+    // ------------------------------------------------------
+    // Actualizar selección visual
+    // ------------------------------------------------------
+
+    stepButtons.forEach((button) => {
+      const buttonStep = Number(button.dataset.step);
+
+      button.classList.toggle("active", buttonStep === stepNumber);
+    });
+
+    // ------------------------------------------------------
+    // Mostrar número seleccionado
+    // ------------------------------------------------------
+
+    selectedStep.textContent = stepNumber;
+
+    // ------------------------------------------------------
+    // Limpiar estados anteriores
+    // ------------------------------------------------------
+
+    document.body.classList.remove(
+      "step-1-active",
+      "step-2-active",
+      "step-3-active",
+      "step-4-active",
+      "step-5-active",
+    );
+
+    // ------------------------------------------------------
+    // Activar estado visual correspondiente
+    // ------------------------------------------------------
+
+    document.body.classList.add(`step-${stepNumber}-active`);
+
+    // ------------------------------------------------------
+    // Activar funcionalidad correspondiente
+    // ------------------------------------------------------
+
+    switch (stepNumber) {
+      case 1:
+        activateStep1();
+
+        break;
+
+      case 2:
+        activateStep2();
+
+        break;
+
+      case 3:
+        activateStep3();
+
+        break;
+
+      case 4:
+        activateStep4();
+
+        break;
+
+      case 5:
+        activateStep5();
+
+        break;
+    }
+  };
+
+  // ========================================================
+  // 6. DIBUJAR PELOTA
+  // ========================================================
 
   const drawBall = () => {
+    // Limpiar Canvas
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Fondo
+
+    ctx.fillStyle = "#ffffff";
+
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Barra superior
 
@@ -107,11 +336,13 @@
 
     ctx.fillRect(0, 0, canvas.width, 45);
 
+    // Texto
+
     ctx.fillStyle = "#1e3a8a";
 
     ctx.font = "bold 18px Arial";
 
-    ctx.fillText("🎯 ¡Haz clic sobre la pelota!", 20, 29);
+    ctx.fillText("Haz clic sobre la pelota", 20, 29);
 
     // Pelota
 
@@ -119,7 +350,7 @@
 
     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
 
-    ctx.fillStyle = "#2563eb";
+    ctx.fillStyle = ball.color;
 
     ctx.fill();
 
@@ -136,9 +367,9 @@
     ctx.stroke();
   };
 
-  // ==========================================
-  // VALIDAR NOMBRE
-  // ==========================================
+  // ========================================================
+  // 7. VALIDAR NOMBRE
+  // ========================================================
 
   const validatePlayerName = () => {
     const name = playerName.value.trim();
@@ -168,9 +399,9 @@
     return true;
   };
 
-  // ==========================================
-  // ACTUALIZAR VELOCIDAD
-  // ==========================================
+  // ========================================================
+  // 8. VELOCIDAD
+  // ========================================================
 
   const updateSpeed = () => {
     const speed = Number(speedInput.value);
@@ -186,9 +417,9 @@
     ball.velocityY = speed * 0.7 * directionY;
   };
 
-  // ==========================================
-  // ACTUALIZAR TAMAÑO
-  // ==========================================
+  // ========================================================
+  // 9. TAMAÑO
+  // ========================================================
 
   const updateSize = () => {
     const size = Number(sizeInput.value);
@@ -198,17 +429,17 @@
     ball.radius = size;
   };
 
-  // ==========================================
-  // CAMBIAR TEMA
-  // ==========================================
+  // ========================================================
+  // 10. TEMA
+  // ========================================================
 
   const toggleTheme = () => {
     document.body.classList.toggle("dark-theme");
   };
 
-  // ==========================================
-  // MOVER PELOTA
-  // ==========================================
+  // ========================================================
+  // 11. POSICIÓN ALEATORIA
+  // ========================================================
 
   const moveBallToRandomPosition = () => {
     const margin = ball.radius;
@@ -218,11 +449,21 @@
     ball.y = 45 + margin + Math.random() * (canvas.height - 45 - margin * 2);
   };
 
-  // ==========================================
-  // ACTUALIZAR PELOTA
-  // ==========================================
+  // ========================================================
+  // 12. ACTUALIZAR PELOTA
+  // ========================================================
 
   const updateBall = (dt) => {
+    /*
+     * Delta Time:
+     *
+     * posición =
+     * posición + velocidad * dt
+     *
+     * Esto hace que el movimiento dependa del tiempo
+     * transcurrido entre frames.
+     */
+
     ball.x += ball.velocityX * dt;
 
     ball.y += ball.velocityY * dt;
@@ -240,9 +481,9 @@
     }
   };
 
-  // ==========================================
-  // FPS
-  // ==========================================
+  // ========================================================
+  // 13. ACTUALIZAR FPS
+  // ========================================================
 
   const updateFPS = (timestamp) => {
     fpsFrameCount++;
@@ -260,9 +501,9 @@
     }
   };
 
-  // ==========================================
-  // FINALIZAR
-  // ==========================================
+  // ========================================================
+  // 14. FINALIZAR JUEGO
+  // ========================================================
 
   const endGame = () => {
     isRunning = false;
@@ -275,19 +516,21 @@
 
     gameStatus.textContent = "Estado: terminado";
 
-    gameMessage.textContent = `🏆 Juego terminado. Puntaje final: ${score}`;
+    gameMessage.textContent = `Juego terminado. Puntaje final: ${score}`;
 
-    startButton.textContent = "▶ Iniciar";
+    startButton.textContent = "Iniciar";
   };
 
-  // ==========================================
-  // LOOP PRINCIPAL
-  // ==========================================
+  // ========================================================
+  // 15. GAME LOOP
+  // ========================================================
 
   const gameLoop = (timestamp) => {
     if (!isRunning) {
       return;
     }
+
+    // Primer frame
 
     if (lastTimestamp === 0) {
       lastTimestamp = timestamp;
@@ -296,23 +539,22 @@
     }
 
     /*
-     * Delta Time:
-     *
-     * Convertimos los milisegundos
-     * transcurridos entre frames a segundos.
+     * Delta Time
      */
 
     const dt = (timestamp - lastTimestamp) / 1000;
 
     lastTimestamp = timestamp;
 
-    // Tiempo total del juego
+    // Tiempo
 
     elapsedGameTime += dt;
 
     timeRemaining = Math.max(0, 30 - Math.floor(elapsedGameTime));
 
     timeElement.textContent = timeRemaining;
+
+    // Finalizar
 
     if (timeRemaining <= 0) {
       endGame();
@@ -339,17 +581,15 @@
     updateFPS(timestamp);
 
     /*
-     * requestAnimationFrame()
-     * solicita el siguiente frame
-     * de la animación.
+     * requestAnimationFrame
      */
 
     animationFrameId = requestAnimationFrame(gameLoop);
   };
 
-  // ==========================================
-  // INICIAR
-  // ==========================================
+  // ========================================================
+  // 16. INICIAR JUEGO
+  // ========================================================
 
   const startGame = () => {
     if (isRunning) {
@@ -360,6 +600,39 @@
       return;
     }
 
+    // Si terminó la partida,
+    // comenzar una nueva
+
+    if (timeRemaining <= 0) {
+      score = 0;
+
+      timeRemaining = 30;
+
+      elapsedGameTime = 0;
+
+      frameCount = 0;
+
+      fps = 0;
+
+      fpsFrameCount = 0;
+
+      combo = 0;
+
+      scoreElement.textContent = "0";
+
+      timeElement.textContent = "30";
+
+      fpsElement.textContent = "0";
+
+      frameCounter.textContent = "0";
+
+      comboElement.textContent = "0";
+
+      ball.color = "#2563eb";
+
+      moveBallToRandomPosition();
+    }
+
     isRunning = true;
 
     lastTimestamp = 0;
@@ -368,16 +641,16 @@
 
     gameStatus.textContent = "Estado: ejecutándose";
 
-    gameMessage.textContent = "🎯 ¡Haz clic sobre la pelota!";
+    gameMessage.textContent = "Haz clic sobre la pelota";
 
-    startButton.textContent = "⏸ Pausar";
+    startButton.textContent = "Pausar";
 
     animationFrameId = requestAnimationFrame(gameLoop);
   };
 
-  // ==========================================
-  // PAUSAR
-  // ==========================================
+  // ========================================================
+  // 17. PAUSAR
+  // ========================================================
 
   const pauseGame = () => {
     isRunning = false;
@@ -390,12 +663,14 @@
 
     gameStatus.textContent = "Estado: pausado";
 
-    startButton.textContent = "▶ Continuar";
+    gameMessage.textContent = "Juego pausado.";
+
+    startButton.textContent = "Continuar";
   };
 
-  // ==========================================
-  // REINICIAR
-  // ==========================================
+  // ========================================================
+  // 18. REINICIAR
+  // ========================================================
 
   const resetGame = () => {
     if (animationFrameId !== null) {
@@ -422,6 +697,8 @@
 
     fpsLastTimestamp = 0;
 
+    combo = 0;
+
     scoreElement.textContent = "0";
 
     timeElement.textContent = "30";
@@ -430,15 +707,19 @@
 
     frameCounter.textContent = "0";
 
+    comboElement.textContent = "0";
+
     gameStatus.textContent = "Estado: detenido";
 
     gameMessage.textContent = 'Ingresa tu nombre y presiona "Iniciar".';
 
-    startButton.textContent = "▶ Iniciar";
+    startButton.textContent = "Iniciar";
 
     ball.x = canvas.width / 2;
 
     ball.y = canvas.height / 2;
+
+    ball.color = "#2563eb";
 
     updateSpeed();
 
@@ -447,9 +728,9 @@
     drawBall();
   };
 
-  // ==========================================
-  // CLICK SOBRE CANVAS
-  // ==========================================
+  // ========================================================
+  // 19. CLICK SOBRE CANVAS
+  // ========================================================
 
   const handleCanvasClick = (event) => {
     if (!isRunning) {
@@ -468,20 +749,44 @@
 
     const distance = Math.sqrt((mouseX - ball.x) ** 2 + (mouseY - ball.y) ** 2);
 
+    // Acierto
+
     if (distance <= ball.radius) {
       score++;
 
       scoreElement.textContent = score;
 
+      combo++;
+
+      comboElement.textContent = combo;
+
+      const colors = ["#2563eb", "#7c3aed", "#db2777", "#ea580c", "#16a34a"];
+
+      ball.color = colors[score % colors.length];
+
       moveBallToRandomPosition();
 
-      gameMessage.textContent = "🎉 ¡Acierto! +1 punto";
+      gameMessage.textContent = `Acierto. +1 punto · Combo x${combo}`;
+
+      drawBall();
     }
   };
 
-  // ==========================================
-  // EVENTOS
-  // ==========================================
+  // ========================================================
+  // 20. EVENTOS DE LOS PASOS
+  // ========================================================
+
+  stepButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const step = Number(button.dataset.step);
+
+      activateStep(step);
+    });
+  });
+
+  // ========================================================
+  // 21. EVENTOS DEL JUEGO
+  // ========================================================
 
   startButton.addEventListener("click", () => {
     if (isRunning) {
@@ -517,13 +822,19 @@
     handleCanvasClick(event);
   });
 
-  // ==========================================
-  // INICIALIZACIÓN
-  // ==========================================
+  // ========================================================
+  // 22. INICIALIZACIÓN
+  // ========================================================
 
   updateSpeed();
 
   updateSize();
 
   resetGame();
+
+  /*
+   * El Paso 1 queda seleccionado inicialmente.
+   */
+
+  activateStep(1);
 })();
