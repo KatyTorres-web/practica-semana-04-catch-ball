@@ -1,0 +1,545 @@
+:root {
+
+    --background: #f4f7fb;
+
+    --surface: #ffffff;
+
+    --text: #1f2937;
+
+    --text-secondary: #6b7280;
+
+    --primary: #2563eb;
+
+    --primary-hover: #1d4ed8;
+
+    --border: #dbe2ea;
+
+    --danger: #dc2626;
+
+    --success: #16a34a;
+
+    --canvas-background: #eff6ff;
+
+    --shadow:
+        0 10px 30px rgba(0, 0, 0, 0.08);
+
+}
+
+
+/* ==========================================
+   CONFIGURACIÓN GENERAL
+========================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+
+}
+
+
+/* ==========================================
+   TEMA OSCURO
+========================================== */
+
+body.dark-theme {
+
+    --background: #111827;
+
+    --surface: #1f2937;
+
+    --text: #f9fafb;
+
+    --text-secondary: #d1d5db;
+
+    --border: #374151;
+
+    --canvas-background: #111827;
+
+}
+
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.header {
+
+    padding: 30px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    background: var(--surface);
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.header h1 {
+
+    margin:
+        5px 0;
+
+}
+
+
+.header p {
+
+    color:
+        var(--text-secondary);
+
+}
+
+
+.eyebrow {
+
+    margin: 0;
+
+    text-transform: uppercase;
+
+    font-size: 0.8rem;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+}
+
+
+/* ==========================================
+   CONTENEDOR
+========================================== */
+
+.container {
+
+    width:
+        min(1100px, 92%);
+
+    margin:
+        30px auto;
+
+}
+
+
+/* ==========================================
+   PANELES
+========================================== */
+
+.panel {
+
+    background:
+        var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        14px;
+
+    padding:
+        24px;
+
+    margin-bottom:
+        24px;
+
+    box-shadow:
+        var(--shadow);
+
+}
+
+
+/* ==========================================
+   CONTROLES
+========================================== */
+
+.controls-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap:
+        20px;
+
+}
+
+
+.control-group {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        8px;
+
+}
+
+
+.control-group label {
+
+    font-weight:
+        bold;
+
+}
+
+
+.control-group input[type="text"] {
+
+    padding:
+        10px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        8px;
+
+    background:
+        var(--surface);
+
+    color:
+        var(--text);
+
+}
+
+
+.control-group input[type="range"] {
+
+    width:
+        100%;
+
+}
+
+
+/* ==========================================
+   BOTONES
+========================================== */
+
+.button-group {
+
+    display:
+        flex;
+
+    gap:
+        10px;
+
+    margin-top:
+        25px;
+
+}
+
+
+.button {
+
+    border:
+        none;
+
+    border-radius:
+        8px;
+
+    padding:
+        11px 18px;
+
+    cursor:
+        pointer;
+
+    font-weight:
+        bold;
+
+}
+
+
+.button-primary {
+
+    background:
+        var(--primary);
+
+    color:
+        white;
+
+}
+
+
+.button-primary:hover {
+
+    background:
+        var(--primary-hover);
+
+}
+
+
+.button-secondary {
+
+    background:
+        transparent;
+
+    color:
+        var(--text);
+
+    border:
+        1px solid var(--border);
+
+}
+
+
+/* ==========================================
+   ESTADÍSTICAS
+========================================== */
+
+.stats {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap:
+        15px;
+
+}
+
+
+.stat-card {
+
+    padding:
+        18px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        10px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        8px;
+
+}
+
+
+.stat-card span {
+
+    color:
+        var(--text-secondary);
+
+}
+
+
+.stat-card strong {
+
+    font-size:
+        1.4rem;
+
+}
+
+
+/* ==========================================
+   CANVAS
+========================================== */
+
+.canvas-wrapper {
+
+    width:
+        100%;
+
+    overflow-x:
+        auto;
+
+    margin-top:
+        20px;
+
+}
+
+
+canvas {
+
+    display:
+        block;
+
+    width:
+        100%;
+
+    max-width:
+        800px;
+
+    margin:
+        auto;
+
+    background:
+        var(--canvas-background);
+
+    border:
+        2px solid var(--border);
+
+    border-radius:
+        10px;
+
+    cursor:
+        crosshair;
+
+}
+
+
+.canvas-header {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+}
+
+
+#gameStatus {
+
+    color:
+        var(--text-secondary);
+
+}
+
+
+/* ==========================================
+   MENSAJES
+========================================== */
+
+.game-message {
+
+    text-align:
+        center;
+
+    font-weight:
+        bold;
+
+}
+
+
+.error-message {
+
+    color:
+        var(--danger);
+
+    min-height:
+        20px;
+
+}
+
+
+.input-error {
+
+    border-color:
+        var(--danger) !important;
+
+    outline:
+        2px solid rgba(
+            220,
+            38,
+            38,
+            0.15
+        );
+
+}
+
+
+/* ==========================================
+   FOOTER
+========================================== */
+
+.footer {
+
+    text-align:
+        center;
+
+    padding:
+        30px;
+
+    color:
+        var(--text-secondary);
+
+}
+
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 800px) {
+
+    .header {
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+    }
+
+
+    .controls-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .stats {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .stats {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
